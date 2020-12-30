@@ -10,20 +10,46 @@ const config = {
 
 const pool = new Pool(config);
 
-async function createPost(paramsArray){
-    const qryObject = {
-        text: 'INSERT INTO posts (usuario, url, descripcion) VALUES ($1, $2, $3)',
-        values: paramsArray
-    }
+async function createPost(paramsArray) {
+  const qryObject = {
+    text: 'INSERT INTO posts (usuario, url, descripcion, likes) VALUES ($1, $2, $3, 0)',
+    values: paramsArray
+  }
+  try {
     const result = await pool.query(qryObject)
     return result
+
+  } catch (error) {
+    console.error(error)
+  }
 }
 
-async function getUsers(){
+async function getPosts() {
+  try {
     const result = await pool.query('SELECT * FROM posts')
     return result
+
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function likePost(paramsArray) {
+  const qryObj = {
+    text: 'UPDATE posts SET likes=0+1 WHERE id = $1 RETURNING *',
+    values: paramsArray
+  }
+  try {
+    const result = await pool.query(qryObj);
+    return result;
+    
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 module.exports = {
-    createPost
+  createPost,
+  getPosts,
+  likePost
 }
