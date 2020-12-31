@@ -1,18 +1,17 @@
 {
-  "name": "desafioLikeMe",
+  "name": "desafiolikeme",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "pg": "^8.5.1"
-  },
   "devDependencies": {
     "nodemon": "^2.0.6"
+  },
+  "dependencies": {
+    "pg": "^8.5.1"
   }
 }

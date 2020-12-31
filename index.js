@@ -7,8 +7,7 @@ const server = http.createServer(async (req, res) => {
   if (req.url == '/' && req.method == 'GET') {
     fs.readFile('./views/index.html', (err, file) => {
       res.writeHead(200, { 'Content-Type': 'text/html' })
-      res.write(file, 'utf8')
-      res.end()
+      res.end(file)
     })
   }
 
@@ -22,12 +21,27 @@ const server = http.createServer(async (req, res) => {
       const result = await db.createPost(paramsArray);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.write(JSON.stringify(result));
+      console.log(result)
       res.end();
     });
   }
   
-
-
+  if (req.url == '/posts' && req.method == 'GET') {
+    const result = await db.getPosts();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.write(JSON.stringify(result.rows));
+    res.end();
+  }
+  if (req.url.startsWith('/post?id=') && req.method == 'PUT') {
+    const { id } = url.parse(req.url, true).query;
+    await db.likePost(id)
+    }
+    req.on('end', async () => {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.write(JSON.stringify(result.rows));
+      res.end();
+    });
+  
 
 })
 server.listen(3000, () => console.log('escuchando el puerto 3000'))

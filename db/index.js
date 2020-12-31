@@ -34,17 +34,16 @@ async function getPosts() {
   }
 }
 
-async function likePost(paramsArray) {
-  const qryObj = {
-    text: 'UPDATE posts SET likes=0+1 WHERE id = $1 RETURNING *',
-    values: paramsArray
-  }
+async function likePost(id) {
+  const query = {   
+  text: 'UPDATE posts SET likes= likes + 1 WHERE id = $1 RETURNING *',
+  values: [id]
+  }  
   try {
-    const result = await pool.query(qryObj);
-    return result;
-    
+    const result = await pool.query(query)
+    return result.nows
   } catch (error) {
-    console.error(error)
+    console.log(error)  
   }
 }
 
